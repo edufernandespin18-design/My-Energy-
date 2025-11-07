@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Energy</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>🔋 MY ENERGY</h1>
+  </header>
+
+  <div class="container">
+    <div class="input-area">
+      <input id="consumoInput" type="number" placeholder="Digite seu consumo (kWh)" />
+      <button id="addConsumo">+ Adicionar Consumo</button>
+    </div>
+
+    <div class="cards">
+      <div class="card" id="totalCard">Consumo Total: 0 kWh</div>
+      <div class="card" id="mediaCard">Gasto Médio: 0 kWh</div>
+      <div class="card" id="variacaoCard">Variação: 0%</div>
+    </div>
+
+    <div class="grafico-dicas">
+      <div class="secao">
+        <h2>Gráfico de Consumo</h2>
+        <canvas id="grafico"></canvas>
+      </div>
+
+      <div class="secao">
+        <h2>Nossas Dicas</h2>
+        <div class="dicas" id="dicasArea">
+          <h3>💡 Dicas para Reduzir o Consumo e Economizar Energia</h3>
+<p>
+Manter um consumo eficiente de energia é uma das melhores formas de cuidar do meio ambiente e do seu bolso. Confira algumas dicas simples que podem fazer diferença no seu dia a dia:
+</p>
+
+<ul>
+  <li>🌞 <strong>Aproveite a luz natural:</strong> Mantenha cortinas e janelas abertas durante o dia para reduzir o uso de lâmpadas.</li>
+
+  <li>💡 <strong>Substitua lâmpadas comuns por LED:</strong> Elas consomem até 80% menos energia e duram muito mais.</li>
+
+  <li>🔌 <strong>Evite o modo stand-by:</strong> Aparelhos conectados à tomada continuam consumindo energia mesmo desligados. Tire-os da tomada quando não estiver usando.</li>
+
+  <li>🌬️ <strong>Use o ar-condicionado com moderação:</strong> Ajuste a temperatura entre 23°C e 25°C e mantenha filtros limpos para melhorar a eficiência.</li>
+
+  <li>🧺 <strong>Otimize o uso da máquina de lavar:</strong> Lave roupas em ciclos completos e, se possível, com água fria.</li>
+
+  <li>🍳 <strong>Na cozinha:</strong> Prefira panelas com tampas e use bocas de fogão compatíveis com o tamanho da panela para evitar desperdício de energia.</li>
+
+  <li>🔋 <strong>Invista em aparelhos com selo Procel A:</strong> Eles são mais eficientes e podem reduzir o consumo em até 40%.</li>
+
+  <li>🚿 <strong>Reduza o tempo no banho:</strong> O chuveiro elétrico é um dos maiores vilões da conta de energia. Cinco minutos a menos por dia já fazem diferença!</li>
+
+  <li>🏠 <strong>Desligue o que não estiver usando:</strong> Luzes acesas, ventiladores e TVs ligados desnecessariamente aumentam seu gasto mensal.</li>
+
+  <li>🌿 <strong>Reveja seus hábitos de consumo:</strong> Monitore seu gasto com frequência no My Energy e procure manter um padrão equilibrado.</li>
+</ul>
+
+<p>
+💬 <em>Dica bônus:</em> pequenas mudanças no comportamento diário podem reduzir sua conta de energia em até <strong>30%</strong> ao mês. Monitore seu progresso e celebre cada economia alcançada!
+</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
