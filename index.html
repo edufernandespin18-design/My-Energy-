@@ -1,75 +1,189 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Energy</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Energy - SPA</title>
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
-    <h1>🔋 MY ENERGY</h1>
+    <h1>🔋 My Energy</h1>
+    <nav id="topNav" class="hidden">
+      <button id="navDashboard" class="nav-btn">Dashboard</button>
+      <button id="navClients" class="nav-btn">Clientes</button>
+      <button id="navUsers" class="nav-btn admin-only">Usuários</button>
+      <button id="navProfile" class="nav-btn">Perfil</button>
+      <button id="logoutBtn" class="nav-btn">Sair</button>
+    </nav>
   </header>
 
-  <div class="container">
-    <div class="input-area">
-      <input id="consumoInput" type="number" placeholder="Digite seu consumo (kWh)" />
-      <button id="addConsumo">+ Adicionar Consumo</button>
-    </div>
-
-    <div class="cards">
-      <div class="card" id="totalCard">Consumo Total: 0 kWh</div>
-      <div class="card" id="mediaCard">Gasto Médio: 0 kWh</div>
-      <div class="card" id="variacaoCard">Variação: 0%</div>
-    </div>
-
-    <div class="grafico-dicas">
-      <div class="secao">
-        <h2>Gráfico de Consumo</h2>
-        <canvas id="grafico"></canvas>
+  <main>
+    <!-- LOGIN -->
+    <section id="view-login" class="view">
+      <div class="card auth-card">
+        <h2>Entrar</h2>
+        <input id="loginEmail" type="email" placeholder="Email" />
+        <input id="loginPassword" type="password" placeholder="Senha" />
+        <button id="loginBtn" class="primary">Entrar</button>
+        <div class="row">
+          <button id="toRegister" class="link-btn">Criar conta</button>
+          <button id="toForgot" class="link-btn">Esqueci a senha</button>
+        </div>
+        <div id="loginMsg" class="msg"></div>
       </div>
+    </section>
 
-      <div class="secao">
-        <h2>Nossas Dicas</h2>
-        <div class="dicas" id="dicasArea">
-          <h3>💡 Dicas para Reduzir o Consumo e Economizar Energia</h3>
-<p>
-Manter um consumo eficiente de energia é uma das melhores formas de cuidar do meio ambiente e do seu bolso. Confira algumas dicas simples que podem fazer diferença no seu dia a dia:
-</p>
+    <!-- REGISTER -->
+    <section id="view-register" class="view hidden">
+      <div class="card auth-card">
+        <h2>Cadastrar usuário</h2>
+        <input id="regName" type="text" placeholder="Nome" />
+        <input id="regEmail" type="email" placeholder="Email" />
+        <input id="regPassword" type="password" placeholder="Senha" />
+        <select id="regRole">
+          <option value="user">Usuário</option>
+          <option value="admin">Administrador</option>
+        </select>
+        <button id="registerBtn" class="primary">Cadastrar</button>
+        <button id="backToLogin1" class="link-btn">Voltar</button>
+        <div id="registerMsg" class="msg"></div>
+      </div>
+    </section>
 
-<ul>
-  <li>🌞 <strong>Aproveite a luz natural:</strong> Mantenha cortinas e janelas abertas durante o dia para reduzir o uso de lâmpadas.</li>
+    <!-- FORGOT -->
+    <section id="view-forgot" class="view hidden">
+      <div class="card auth-card">
+        <h2>Recuperar senha</h2>
+        <input id="forgotEmail" type="email" placeholder="Email cadastrado" />
+        <button id="forgotBtn" class="primary">Gerar token</button>
+        <p class="muted">O token será mostrado aqui (simulação local). Use para redefinir a senha.</p>
+        <div id="forgotResult" class="token-area"></div>
+        <button id="backToLogin2" class="link-btn">Voltar</button>
+      </div>
+    </section>
 
-  <li>💡 <strong>Substitua lâmpadas comuns por LED:</strong> Elas consomem até 80% menos energia e duram muito mais.</li>
+    <!-- RESET PASSWORD -->
+    <section id="view-reset" class="view hidden">
+      <div class="card auth-card">
+        <h2>Redefinir senha</h2>
+        <input id="resetEmail" type="email" placeholder="Email" />
+        <input id="resetToken" type="text" placeholder="Token recebido" />
+        <input id="resetPassword" type="password" placeholder="Nova senha" />
+        <button id="resetBtn" class="primary">Redefinir</button>
+        <button id="backToLogin3" class="link-btn">Voltar</button>
+        <div id="resetMsg" class="msg"></div>
+      </div>
+    </section>
 
-  <li>🔌 <strong>Evite o modo stand-by:</strong> Aparelhos conectados à tomada continuam consumindo energia mesmo desligados. Tire-os da tomada quando não estiver usando.</li>
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="view hidden">
+      <div class="dashboard-grid">
+        <div class="card">
+          <h3>Resumo</h3>
+          <p id="dashTotal">Consumo Total: 0 kWh</p>
+          <p id="dashMedia">Média: 0 kWh</p>
+          <p id="dashMeta">Residências: 0</p>
+        </div>
 
-  <li>🌬️ <strong>Use o ar-condicionado com moderação:</strong> Ajuste a temperatura entre 23°C e 25°C e mantenha filtros limpos para melhorar a eficiência.</li>
+        <div class="card">
+          <h3>Selecionar Cliente / Residência</h3>
+          <select id="selectClient"></select>
+          <select id="selectHouse"></select>
+        </div>
 
-  <li>🧺 <strong>Otimize o uso da máquina de lavar:</strong> Lave roupas em ciclos completos e, se possível, com água fria.</li>
+        <div class="card">
+          <h3>Adicionar Consumo</h3>
+          <input id="inputKwh" type="number" placeholder="kWh" />
+          <input id="inputDate" type="date" />
+          <input id="inputNote" type="text" placeholder="Observação (opcional)" />
+          <button id="addConsumptionBtn" class="primary">Adicionar</button>
+        </div>
 
-  <li>🍳 <strong>Na cozinha:</strong> Prefira panelas com tampas e use bocas de fogão compatíveis com o tamanho da panela para evitar desperdício de energia.</li>
+        <div class="card full">
+          <h3>Gráfico de Consumo</h3>
+          <canvas id="dashChart"></canvas>
+        </div>
 
-  <li>🔋 <strong>Invista em aparelhos com selo Procel A:</strong> Eles são mais eficientes e podem reduzir o consumo em até 40%.</li>
-
-  <li>🚿 <strong>Reduza o tempo no banho:</strong> O chuveiro elétrico é um dos maiores vilões da conta de energia. Cinco minutos a menos por dia já fazem diferença!</li>
-
-  <li>🏠 <strong>Desligue o que não estiver usando:</strong> Luzes acesas, ventiladores e TVs ligados desnecessariamente aumentam seu gasto mensal.</li>
-
-  <li>🌿 <strong>Reveja seus hábitos de consumo:</strong> Monitore seu gasto com frequência no My Energy e procure manter um padrão equilibrado.</li>
-</ul>
-
-<p>
-💬 <em>Dica bônus:</em> pequenas mudanças no comportamento diário podem reduzir sua conta de energia em até <strong>30%</strong> ao mês. Monitore seu progresso e celebre cada economia alcançada!
-</p>
-
+        <div class="card full">
+          <h3>Lista de Consumos</h3>
+          <div id="consumptionList" class="list"></div>
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  <script src="script.js"></script>
+    <!-- CLIENTS -->
+    <section id="view-clients" class="view hidden">
+      <div class="flex-row">
+        <div class="card wide">
+          <h3>Clientes</h3>
+          <div class="form-inline">
+            <input id="clientName" placeholder="Nome do cliente" />
+            <input id="clientContact" placeholder="Contato" />
+            <button id="addClientBtn" class="primary">Adicionar Cliente</button>
+          </div>
+          <div id="clientsList" class="list"></div>
+        </div>
+
+        <div class="card wide">
+          <h3>Residências do Cliente Selecionado</h3>
+          <div id="housesTitle">Selecione um cliente</div>
+          <div class="form-inline">
+            <input id="houseLabel" placeholder="Apelido (ex: Casa 1)" />
+            <input id="houseAddress" placeholder="Endereço" />
+            <button id="addHouseBtn" class="primary">Adicionar Residência</button>
+          </div>
+          <div id="housesList" class="list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USERS (admin) -->
+    <section id="view-users" class="view hidden">
+      <div class="card wide">
+        <h3>Gerenciar Usuários (Admin)</h3>
+        <div class="form-inline">
+          <input id="userName" placeholder="Nome" />
+          <input id="userEmail" placeholder="Email" />
+          <select id="userRole">
+            <option value="user">Usuário</option>
+            <option value="admin">Administrador</option>
+          </select>
+          <button id="addUserBtn" class="primary">Adicionar Usuário</button>
+        </div>
+        <div id="usersList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="view-profile" class="view hidden">
+      <div class="card auth-card">
+        <h2>Meu Perfil</h2>
+        <input id="profileName" type="text" placeholder="Nome" />
+        <input id="profileEmail" type="email" placeholder="Email" disabled />
+        <input id="profilePassword" type="password" placeholder="Nova senha (opcional)" />
+        <button id="saveProfileBtn" class="primary">Salvar</button>
+        <div id="profileMsg" class="msg"></div>
+      </div>
+    </section>
+
+    <!-- FOOTER / MSG -->
+    <section id="view-msg" class="view hidden">
+      <div class="card">
+        <p id="generalMsg">Mensagem</p>
+        <button id="msgBack" class="primary">Voltar</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>My Energy - Protótipo front-end • Dados locais (localStorage)</small>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
